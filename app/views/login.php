@@ -18,15 +18,15 @@
     </div>
 
     <div class="form-group">
-      <input type="email" class="form-control" id="email" placeholder="Email">
+      <input name="email" type="email" class="form-control" id="email" placeholder="Email">
     </div>
     <div class="form-group">
-      <input type="password" class="form-control" id="password" placeholder="Пароль">
+      <input name="password" type="password" class="form-control" id="password" placeholder="Пароль">
     </div>
 
     <div class="checkbox mb-3">
       <label>
-        <input type="checkbox"> Запомнить меня
+        <input name="remember" type="checkbox"> Запомнить меня
       </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>

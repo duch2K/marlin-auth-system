@@ -10,7 +10,10 @@
         <ul>
           <?php foreach ($_SESSION['register_error'] as $err): ?>
           <li><?= $err; ?></li>
-          <?php endforeach; ?>
+          <?php endforeach; 
+          $_SESSION['register_error'] = [];
+          unset($_POST);
+          ?>
         </ul>
       </div>
       <?php elseif (isset($_POST['register'])): ?>

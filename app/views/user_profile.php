@@ -16,12 +16,21 @@
         </ul>
 
         <ul class="navbar-nav">
+          <?php if ($user['id'] === $auth->getUserId() and $auth->isLoggedIn()): ?>
           <li class="nav-item">
-            <a href="#" class="nav-link">Войти</a>
+            <a href="/user-edit" class="nav-link">Редактировать</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Регистрация</a>
+            <a href="/logout" class="nav-link">Выйти</a>
           </li>
+          <?php else: ?>
+          <li class="nav-item">
+            <a href="/login" class="nav-link">Войти</a>
+          </li>
+          <li class="nav-item">
+            <a href="/register" class="nav-link">Регистрация</a>
+          </li>
+          <?php endif; ?>
         </ul>
       </div>
     </nav>
@@ -40,10 +49,10 @@
 
            <tbody>
              <tr>
-               <td>2</td>
-               <td>Джон</td>
-               <td>25/02/2025</td>
-               <td>Привет! Я новый пользователь вашего проекта, хочу перейти на уровень 3!</td>
+               <td><?= $user['id']; ?></td>
+               <td><?= $user['username']; ?></td>
+               <td><?= date('m/d/Y', $user['registered']); ?></td>
+               <td><?= $user['status_text']; ?></td>
              </tr>
            </tbody>
          </table>

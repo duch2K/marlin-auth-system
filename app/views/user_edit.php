@@ -20,9 +20,11 @@
           <ul class="navbar-nav">
             <li class="nav-item">
               <li class="nav-item">
-                <a href="profile.html" class="nav-link">Профиль</a>
+                <a href="user-<?= $user['id'] ?>" class="nav-link">Профиль</a>
               </li>
-              <a href="#" class="nav-link">Выйти</a>
+              <li class="nav-item">
+                <a href="/logout" class="nav-link">Выйти</a>
+              </li>
             </li>
           </ul>
         </div>
@@ -31,7 +33,7 @@
    <div class="container">
      <div class="row">
        <div class="col-md-8">
-         <h1>Профиль пользователя - Рахим</h1>
+         <h1>Профиль пользователя - <?= $user['username'] ?></h1>
          <div class="alert alert-success">Профиль обновлен</div>
          
          <div class="alert alert-danger">
@@ -42,19 +44,20 @@
          <ul>
            <li><a href="/changepassword">Изменить пароль</a></li>
          </ul>
-         <form action="" class="form">
-           <div class="form-group">
-             <label for="username">Имя</label>
-             <input type="text" id="username" class="form-control" value="Рахим">
-           </div>
-           <div class="form-group">
-             <label for="status">Статус</label>
-             <input type="text" id="status" class="form-control" value="Разрабатываю новые проекты)">
-           </div>
+         <form action="/user_update" method="POST" class="form">
+            <input type="hidden" name="id" value="<?= $user['id'] ?>">
+            <div class="form-group">
+              <label for="username">Имя</label>
+              <input type="text" name="username" id="username" class="form-control" value="<?= $user['username']; ?>">
+            </div>
+            <div class="form-group">
+              <label for="status">Статус</label>
+              <input type="text" name="status_text" id="status" class="form-control" value="<?= $user['status_text']; ?>">
+            </div>
 
-           <div class="form-group">
-             <button class="btn btn-warning">Обновить</button>
-           </div>
+            <div class="form-group">
+              <button name="user_edit" class="btn btn-warning">Обновить</button>
+            </div>
          </form>
 
 

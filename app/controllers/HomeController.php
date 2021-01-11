@@ -17,7 +17,7 @@ class HomeController {
   
   public function actionIndex() {
     $users = $this->db->getAll('users');
-    echo $this->templates->render('user_profile', ['users' => $users, 'auth' => $this->auth]);
+    echo $this->templates->render('index', ['users' => $users, 'auth' => $this->auth]);
   }
 
   public function actionLogin() {
@@ -26,5 +26,10 @@ class HomeController {
 
   public function actionRegister() {
     echo $this->templates->render('register', ['auth' => $this->auth]);
+  }
+
+  public function actionProfile($id) {
+    $user = $this->db->getOne('users', $id);
+    echo $this->templates->render('user_profile', ['user' => $user, 'auth' => $this->auth]);
   }
 }

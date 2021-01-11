@@ -4,27 +4,22 @@ namespace App\controllers;
 
 use Delight\Auth\Auth;
 use League\Plates\Engine;
+use App\components\QueryBuilder;
 
 class AuthController {
-  private $auth, $templates;
+  private $auth, $templates, $db;
 
-  public function __construct(Auth $auth, Engine $engine) {
+  public function __construct(Auth $auth, Engine $engine, QueryBuilder $db) {
     $this->auth = $auth;
     $this->templates = $engine;
-  }
-  
-  public function actionProfile() {
-    if ($this->auth->isLoggedIn()) {
-      echo $this->templates->render('user_profile', ['auth' => $this->auth]);
-    } else {
-      header('Location: /');
-    }
+    $this->db = $db;
   }
 
   public function actionLogin() {
     try {
-      $this->auth->login($_POST['email'], $_POST['password']);
+      $this->auth->login($_POST['email'], $_POST['password'], 60 * 60 * 24 * 7);
       
+      unset($_POST);
       header('Location: /user-' . $this->auth->getUserId());
     }
     catch (\Delight\Auth\InvalidEmailException $e) {
@@ -45,10 +40,10 @@ class AuthController {
     $_SESSION['register_error'] = [];
 
     if ($_POST['password'] !== $_POST['password2']) 
-      $_SESSION['register_error'][] = 'Confirm password!';
+      $_SESSION['register_error'][] = 'Повторно введите пароль!';
 
-    if ($_POST['agreement']) 
-      $_SESSION['register_error'][] = 'Confirm agreement!';
+    if (!$_POST['agreement']) 
+      $_SESSION['register_error'][] = 'Нужно согласие со всеми правилами!';
 
     try {
       $userId = $this->auth->register($_POST['email'], $_POST['password'], $_POST['username'], function ($selector, $token) {
@@ -69,12 +64,39 @@ class AuthController {
     catch (\Delight\Auth\TooManyRequestsException $e) {
       $_SESSION['register_error'][] = 'Too many requests!';
     }
-
+    unset($_POST);
     header('Location: /register');
   }
 
   public function actionLogout() {
     $this->auth->logOut();
     header('Location: /');
+  }
+
+  public function actionChangePassword() {
+    if ($this->auth->isLoggedIn()) {
+      $user = $this->db->getOne('users', $this->auth->getUserId());
+      echo $this->templates->render('changepassword', ['user' => $user]);
+    } else {
+      header('Location: /');
+    }
+  }
+
+  public function actionUserEdit() {
+    if ($this->auth->isLoggedIn()) {
+      $user = $this->db->getOne('users', $this->auth->getUserId());
+      echo $this->templates->render('user_edit', ['user' => $user]);
+    } else {
+      header('Location: /');
+    }
+  }
+
+  public function actionUserUpdate() {
+    $id = $_POST['id'];
+    $username = $_POST['username'];
+    $status = $_POST['status_text'];
+
+    $this->db->update('users', $id, ['username' => $username, 'status_text' => $status]);
+    header('Location: user-' . $id);
   }
 }
