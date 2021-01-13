@@ -10,17 +10,14 @@
         <ul>
           <?php foreach ($_SESSION['register_error'] as $err): ?>
           <li><?= $err; ?></li>
-          <?php endforeach; 
-          $_SESSION['register_error'] = [];
-          unset($_POST);
-          ?>
+          <?php endforeach; unset($_SESSION['register_error']); ?>
         </ul>
       </div>
-      <?php elseif (isset($_POST['register'])): ?>
+      <?php elseif (isset($_SESSION['register_success']) and $_SESSION['register_success']): ?>
       <div class="alert alert-success">
         Успешный успех
       </div>
-      <?php endif; ?>
+      <?php endif; unset($_SESSION['register_success']); ?>
 
       <div class="form-group">
         <input type="email" name="email" class="form-control" id="email" placeholder="Email">

@@ -39,33 +39,53 @@ class AuthController {
   public function actionRegister() {
     $_SESSION['register_error'] = [];
 
-    if ($_POST['password'] !== $_POST['password2']) 
+    if ($_POST['password'] !== $_POST['password2']) {
       $_SESSION['register_error'][] = 'Повторно введите пароль!';
+      header('Location: /register');
+    }
 
-    if (!$_POST['agreement']) 
+    if (!$_POST['agreement']) {
       $_SESSION['register_error'][] = 'Нужно согласие со всеми правилами!';
+      header('Location: /register');
+    }
 
     try {
       $userId = $this->auth->register($_POST['email'], $_POST['password'], $_POST['username'], function ($selector, $token) {
-        echo 'Send ' . $selector . ' and ' . $token . ' to the user (e.g. via email)';
+        try {
+          $this->auth->confirmEmail($selector, $token);
+        }
+        catch (\Delight\Auth\InvalidSelectorTokenPairException $e) {
+          die('Не валидный токен!');
+        }
+        catch (\Delight\Auth\TokenExpiredException $e) {
+          die('Токен просрочен!');
+        }
+        catch (\Delight\Auth\UserAlreadyExistsException $e) {
+          die('Этот email уже существует!');
+        }
+        catch (\Delight\Auth\TooManyRequestsException $e) {
+          die('Слишком много запросов!');
+        }
+
+        $_SESSION['register_success'] = true;
       });
   
       echo 'We have signed up a new user with the ID ' . $userId;
     }
     catch (\Delight\Auth\InvalidEmailException $e) {
-      $_SESSION['register_error'][] = 'Invalid email!';
+      $_SESSION['register_error'][] = 'Не правильный email!';
     }
     catch (\Delight\Auth\InvalidPasswordException $e) {
-      $_SESSION['register_error'][] = 'Invalid password!';
+      $_SESSION['register_error'][] = 'Невалидный пароль!';
     }
     catch (\Delight\Auth\UserAlreadyExistsException $e) {
-      $_SESSION['register_error'][] = 'This user already exists!';
+      $_SESSION['register_error'][] = 'Этот пользователь уже существует!';
     }
     catch (\Delight\Auth\TooManyRequestsException $e) {
-      $_SESSION['register_error'][] = 'Too many requests!';
+      $_SESSION['register_error'][] = 'Слишком много запросов!';
     }
-    unset($_POST);
     header('Location: /register');
+    exit;
   }
 
   public function actionLogout() {
