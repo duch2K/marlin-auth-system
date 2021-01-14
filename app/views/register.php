@@ -17,7 +17,7 @@
       <div class="alert alert-success">
         Успешный успех
       </div>
-      <?php endif; unset($_SESSION['register_success']); ?>
+      <?php unset($_SESSION['register_success']); endif; ?>
 
       <div class="form-group">
         <input type="email" name="email" class="form-control" id="email" placeholder="Email">

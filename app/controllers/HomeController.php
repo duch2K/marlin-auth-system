@@ -17,7 +17,6 @@ class HomeController {
   
   public function actionIndex() {
     $users = $this->db->getAll('users');
-    d($this->auth->getRoles());die;
     echo $this->templates->render('index', ['users' => $users, 'auth' => $this->auth]);
   }
 
@@ -35,5 +34,9 @@ class HomeController {
       echo $this->templates->render('user_profile', ['user' => $user, 'auth' => $this->auth]);
     else
       header('Location: /');die;
+  }
+
+  public function actionAdminIndex() {
+
   }
 }

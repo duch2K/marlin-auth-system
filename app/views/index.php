@@ -12,15 +12,29 @@
           <li class="nav-item">
             <a class="nav-link" href="/">Главная</a>
           </li>
+          <?php if ($auth->hasRole(0)): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/users">Управление пользователями</a>
+          </li>
+          <?php endif; ?>
         </ul>
 
         <ul class="navbar-nav">
+          <?php if ($auth->isLoggedIn()): ?>
+          <li class="nav-item">
+            <a href="/user-<?= $auth->getUserId(); ?>" class="nav-link">Мой профиль</a>
+          </li>
+          <li class="nav-item">
+            <a href="/logout" class="nav-link">Выйти</a>
+          </li>
+          <?php else: ?>
           <li class="nav-item">
             <a href="/login" class="nav-link">Войти</a>
           </li>
           <li class="nav-item">
             <a href="/register" class="nav-link">Регистрация</a>
           </li>
+          <?php endif; ?>
         </ul>
       </div>
     </nav>

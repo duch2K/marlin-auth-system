@@ -94,7 +94,7 @@ class AuthController {
   public function actionChangePassword() {
     if ($this->auth->isLoggedIn()) {
       $user = $this->db->getOne('users', $this->auth->getUserId());
-      echo $this->templates->render('changepassword', ['user' => $user]);
+      echo $this->templates->render('changepassword', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');
     }
@@ -103,7 +103,7 @@ class AuthController {
   public function actionUserEdit() {
     if ($this->auth->isLoggedIn()) {
       $user = $this->db->getOne('users', $this->auth->getUserId());
-      echo $this->templates->render('user_edit', ['user' => $user]);
+      echo $this->templates->render('user_edit', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');
     }
@@ -114,7 +114,13 @@ class AuthController {
     $username = $_POST['username'];
     $status = $_POST['status_text'];
 
-    $this->db->update('users', $id, ['username' => $username, 'status_text' => $status]);
-    header('Location: user-' . $id);
+    if (strlen($status) > 255)
+      $_SESSION['user_update_error'] = 'Статус слишком длинный!';
+    else {
+      $this->db->update('users', $id, ['username' => $username, 'status_text' => $status]);
+      $_SESSION['user_update_success'] = true;
+    }
+
+    header('Location: /user-edit');die;
   }
 }
