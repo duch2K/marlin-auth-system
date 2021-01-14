@@ -34,6 +34,7 @@
      <div class="row">
        <div class="col-md-8">
          <h1>Профиль пользователя - <?= $user['username'] ?></h1>
+         
          <div class="alert alert-success">Профиль обновлен</div>
          
          <div class="alert alert-danger">

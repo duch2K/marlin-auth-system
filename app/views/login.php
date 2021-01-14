@@ -2,20 +2,16 @@
 
 <div class="wrapper text-center">
   <form action="/login" method="POST" class="form-signin">
-    <img class="mb-4" src="images/apple-touch-icon.png" alt="" width="72" height="72">
+    <a href="/"><img class="mb-4" src="images/apple-touch-icon.png" alt="" width="72" height="72"></a>
     <h1 class="h3 mb-3 font-weight-normal">Авторизация</h1>
 
+    <?php if (isset($_SESSION['login_error'])): ?>
     <div class="alert alert-danger">
       <ul>
-        <li>Ошибка валидации 1</li>
-        <li>Ошибка валидации 2</li>
-        <li>Ошибка валидации 3</li>
+        <li><?= $_SESSION['login_error']; ?></li>
       </ul>
     </div>
-
-    <div class="alert alert-info">
-      Логин или пароль неверны
-    </div>
+    <?php endif; unset($_SESSION['login_error']); ?>
 
     <div class="form-group">
       <input name="email" type="email" class="form-control" id="email" placeholder="Email">

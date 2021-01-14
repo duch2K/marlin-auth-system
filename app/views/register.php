@@ -2,7 +2,7 @@
 
 <div class="wrapper text-center">
   <form action="/register" method="POST" class="form-signin">
-      <img class="mb-4" src="images/apple-touch-icon.png" alt="" width="72" height="72">
+      <a href="/"><img class="mb-4" src="images/apple-touch-icon.png" alt="" width="72" height="72"></a>
       <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
 
       <?php if (isset($_SESSION['register_error']) and count($_SESSION['register_error']) > 0): ?>

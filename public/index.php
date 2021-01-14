@@ -50,7 +50,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
   $r->addRoute('GET', '/user-edit', ['App\controllers\AuthController', 'actionUserEdit']);
   $r->addRoute('POST', '/user-update', ['App\controllers\AuthController', 'actionUserUpdate']);
   $r->addRoute('GET', '/changepass', ['App\controllers\AuthController', 'actionChangePassword']);
-  $r->addRoute('GET', '/user-{id:\d+}', ['App\controllers\AuthController', 'actionProfile']);
+  $r->addRoute('GET', '/user-{id:\d+}', ['App\controllers\HomeController', 'actionProfile']);
   $r->addRoute('GET', '/admin/users', ['App\controllers\HomeController', 'actionUsersAdmin']);
   $r->addRoute('GET', '/admin/user-edit', ['App\controllers\HomeController', 'actionUserEditAdmin']);
 });

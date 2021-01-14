@@ -19,21 +19,22 @@ class AuthController {
     try {
       $this->auth->login($_POST['email'], $_POST['password'], 60 * 60 * 24 * 7);
       
-      unset($_POST);
-      header('Location: /user-' . $this->auth->getUserId());
+      header('Location: /user-' . $this->auth->getUserId());die;
     }
     catch (\Delight\Auth\InvalidEmailException $e) {
-      $_SESSION['Wrong email or password!'];
+      $_SESSION['login_error'] = 'Wrong email or password!';
     }
     catch (\Delight\Auth\InvalidPasswordException $e) {
-      $_SESSION['Wrong email or password!'];
+      $_SESSION['login_error'] = 'Wrong email or password!';
     }
     catch (\Delight\Auth\EmailNotVerifiedException $e) {
-      $_SESSION['Email is not verified! Please verify your email to log in!'];
+      $_SESSION['login_error'] = 'Email is not verified! Please verify your email to log in!';
     }
     catch (\Delight\Auth\TooManyRequestsException $e) {
-      $_SESSION['Too many requests!'];
+      $_SESSION['login_error'] = 'Too many requests!';
     }
+
+    header('Location: /login');die;
   }
 
   public function actionRegister() {
@@ -41,12 +42,12 @@ class AuthController {
 
     if ($_POST['password'] !== $_POST['password2']) {
       $_SESSION['register_error'][] = 'Повторно введите пароль!';
-      header('Location: /register');
+      header('Location: /register');die;
     }
 
     if (!$_POST['agreement']) {
       $_SESSION['register_error'][] = 'Нужно согласие со всеми правилами!';
-      header('Location: /register');
+      header('Location: /register');die;
     }
 
     try {
@@ -66,10 +67,8 @@ class AuthController {
         catch (\Delight\Auth\TooManyRequestsException $e) {
           die('Слишком много запросов!');
         }
-
-        $_SESSION['register_success'] = true;
       });
-  
+      $_SESSION['register_success'] = true;
       echo 'We have signed up a new user with the ID ' . $userId;
     }
     catch (\Delight\Auth\InvalidEmailException $e) {
@@ -84,8 +83,7 @@ class AuthController {
     catch (\Delight\Auth\TooManyRequestsException $e) {
       $_SESSION['register_error'][] = 'Слишком много запросов!';
     }
-    header('Location: /register');
-    exit;
+    header('Location: /register');die;
   }
 
   public function actionLogout() {

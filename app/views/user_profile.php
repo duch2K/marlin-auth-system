@@ -16,19 +16,26 @@
         </ul>
 
         <ul class="navbar-nav">
-          <?php if ($user['id'] === $auth->getUserId() and $auth->isLoggedIn()): ?>
+          <?php if (intval($user['id']) === $auth->getUserId() and $auth->isLoggedIn()): ?>
           <li class="nav-item">
-            <a href="/user-edit" class="nav-link">Редактировать</a>
+            <a href="/user-edit" class="nav-link">Редактировать профиль</a>
           </li>
           <li class="nav-item">
             <a href="/logout" class="nav-link">Выйти</a>
           </li>
-          <?php else: ?>
+          <?php elseif ($user['id'] !== $auth->getUserId() and $auth->isLoggedIn()): ?>
           <li class="nav-item">
-            <a href="/login" class="nav-link">Войти</a>
+            <a href="/user-<?= $auth->getUserId(); ?>" class="nav-link">Мой профиль</a>
           </li>
           <li class="nav-item">
-            <a href="/register" class="nav-link">Регистрация</a>
+            <a href="/register" class="nav-link">Выйти</a>
+          </li>
+          <?php else: ?>
+          <li class="nav-item">
+            <a href="/login" class="nav-link">Регистрация</a>
+          </li>
+          <li class="nav-item">
+            <a href="/register" class="nav-link">Войти</a>
           </li>
           <?php endif; ?>
         </ul>
