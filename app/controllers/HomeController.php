@@ -2,9 +2,10 @@
 
 namespace App\controllers;
 
-use App\components\QueryBuilder;
-use League\Plates\Engine;
 use Delight\Auth\Auth;
+use Delight\Auth\Role;
+use League\Plates\Engine;
+use App\components\QueryBuilder;
 
 class HomeController {
   private $auth, $templates, $db;
@@ -37,6 +38,11 @@ class HomeController {
   }
 
   public function actionAdminIndex() {
-
+    if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
+      $users = $this->db->getAll('users');
+      echo $this->templates->render('admin/index', ['users' => $users, 'auth' => $this->auth]);
+    } else {
+      header('Location: /');die;
+    }
   }
 }

@@ -12,7 +12,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/">Главная</a>
           </li>
-          <?php if ($auth->hasRole(0)): ?>
+          <?php if ($auth->hasRole(\Delight\Auth\Role::ADMIN)): ?>
           <li class="nav-item">
             <a class="nav-link" href="/admin/users">Управление пользователями</a>
           </li>

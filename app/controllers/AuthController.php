@@ -3,6 +3,7 @@
 namespace App\controllers;
 
 use Delight\Auth\Auth;
+use Delight\Auth\Role;
 use League\Plates\Engine;
 use App\components\QueryBuilder;
 
@@ -88,7 +89,7 @@ class AuthController {
 
   public function actionLogout() {
     $this->auth->logOut();
-    header('Location: /');
+    header('Location: /');die;
   }
 
   public function actionChangePassword() {
@@ -96,7 +97,7 @@ class AuthController {
       $user = $this->db->getOne('users', $this->auth->getUserId());
       echo $this->templates->render('changepassword', ['user' => $user, 'auth' => $this->auth]);
     } else {
-      header('Location: /');
+      header('Location: /');die;
     }
   }
 
@@ -105,7 +106,16 @@ class AuthController {
       $user = $this->db->getOne('users', $this->auth->getUserId());
       echo $this->templates->render('user_edit', ['user' => $user, 'auth' => $this->auth]);
     } else {
-      header('Location: /');
+      header('Location: /');die;
+    }
+  }
+
+  public function actionAdminUserEdit($id) {
+    if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
+      $user = $this->db->getOne('users', $id);
+      echo $this->templates->render('admin/user_edit', ['user' => $user, 'auth' => $this->auth]);
+    } else {
+      header('Location: /');die;
     }
   }
 
