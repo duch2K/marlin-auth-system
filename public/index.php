@@ -43,16 +43,19 @@ $container = $containerBuilder->build();
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
   $r->addRoute('GET', '/', ['App\controllers\HomeController', 'actionIndex']);
   $r->addRoute('GET', '/login', ['App\controllers\HomeController', 'actionLogin']);
-  $r->addRoute('POST', '/login', ['App\controllers\AuthController', 'actionLogin']);
   $r->addRoute('GET', '/register', ['App\controllers\HomeController', 'actionRegister']);
-  $r->addRoute('POST', '/register', ['App\controllers\AuthController', 'actionRegister']);
-  $r->addRoute('GET', '/logout', ['App\controllers\AuthController', 'actionLogout']);
-  $r->addRoute('GET', '/user-edit', ['App\controllers\AuthController', 'actionUserEdit']);
-  $r->addRoute('POST', '/user-update', ['App\controllers\AuthController', 'actionUserUpdate']);
-  $r->addRoute('GET', '/changepass', ['App\controllers\AuthController', 'actionChangePassword']);
   $r->addRoute('GET', '/user-{id:\d+}', ['App\controllers\HomeController', 'actionProfile']);
-  $r->addRoute('GET', '/admin', ['App\controllers\HomeController', 'actionAdminIndex']);
-  $r->addRoute('GET', '/admin/user-edit', ['App\controllers\HomeController', 'actionUserEditAdmin']);
+  $r->addRoute('GET', '/admin', ['App\controllers\HomeController', 'actionAdmin']);
+  $r->addRoute('GET', '/edit-user', ['App\controllers\HomeController', 'actionEditUser']);
+  $r->addRoute('GET', '/changepass', ['App\controllers\HomeController', 'actionChangePassword']);
+  
+  $r->addRoute('GET', '/logout', ['App\controllers\AuthController', 'actionLogout']);
+  $r->addRoute('POST', '/login', ['App\controllers\AuthController', 'actionLogin']);
+  $r->addRoute('POST', '/register', ['App\controllers\AuthController', 'actionRegister']);
+  $r->addRoute('POST', '/edit-user', ['App\controllers\AuthController', 'actionEditUser']);
+  
+  $r->addRoute('POST', '/admin/edit-user/{id:\d+}', ['App\controllers\AdminController', 'actionEditUser']);
+  $r->addRoute('POST', '/admin/delete-user/{id:\d+}', ['App\controllers\AdminController', 'actionDeleteUser']);
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];

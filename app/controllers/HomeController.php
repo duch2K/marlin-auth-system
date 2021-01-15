@@ -37,7 +37,25 @@ class HomeController {
       header('Location: /');die;
   }
 
-  public function actionAdminIndex() {
+  public function actionEditUser() {
+    if ($this->auth->isLoggedIn()) {
+      $user = $this->db->getOne('users', $this->auth->getUserId());
+      echo $this->templates->render('user_edit', ['user' => $user, 'auth' => $this->auth]);
+    } else {
+      header('Location: /');die;
+    }
+  }
+
+  public function actionChangePassword() {
+    if ($this->auth->isLoggedIn()) {
+      $user = $this->db->getOne('users', $this->auth->getUserId());
+      echo $this->templates->render('changepassword', ['user' => $user, 'auth' => $this->auth]);
+    } else {
+      header('Location: /');die;
+    }
+  }
+
+  public function actionAdmin() {
     if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
       $users = $this->db->getAll('users');
       echo $this->templates->render('admin/index', ['users' => $users, 'auth' => $this->auth]);

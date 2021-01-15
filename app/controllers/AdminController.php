@@ -18,7 +18,8 @@ class AdminController {
 
   public function actionEditUser($id) {
     if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
-
+      $user = $this->db->getOne('users', $id);
+      echo $this->templates->render('admin/user_edit', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');die;
     }

@@ -23,12 +23,12 @@
         <ul class="navbar-nav">
           <?php if ($auth->hasRole(\Delight\Auth\Role::ADMIN) and intval($user['id']) !== $auth->getUserId()): ?>
           <li class="nav-item">
-            <a href="/admin/user-edit" class="nav-link">Редактировать профиль пользователя</a>
+            <a href="/admin/edit-user" class="nav-link">Редактировать профиль пользователя</a>
           </li>
           <?php endif; ?>
           <?php if (intval($user['id']) === $auth->getUserId() and $auth->isLoggedIn()): ?>
           <li class="nav-item">
-            <a href="/user-edit" class="nav-link">Редактировать профиль</a>
+            <a href="/edit-user" class="nav-link">Редактировать профиль</a>
           </li>
           <li class="nav-item">
             <a href="/logout" class="nav-link">Выйти</a>

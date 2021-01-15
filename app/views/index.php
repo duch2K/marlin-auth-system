@@ -14,7 +14,7 @@
           </li>
           <?php if ($auth->hasRole(\Delight\Auth\Role::ADMIN)): ?>
           <li class="nav-item">
-            <a class="nav-link" href="/admin/users">Управление пользователями</a>
+            <a class="nav-link" href="/admin">Управление пользователями</a>
           </li>
           <?php endif; ?>
         </ul>

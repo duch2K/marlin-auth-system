@@ -92,34 +92,16 @@ class AuthController {
     header('Location: /');die;
   }
 
-  public function actionChangePassword() {
-    if ($this->auth->isLoggedIn()) {
-      $user = $this->db->getOne('users', $this->auth->getUserId());
-      echo $this->templates->render('changepassword', ['user' => $user, 'auth' => $this->auth]);
-    } else {
-      header('Location: /');die;
-    }
-  }
-
-  public function actionUserEdit() {
-    if ($this->auth->isLoggedIn()) {
-      $user = $this->db->getOne('users', $this->auth->getUserId());
-      echo $this->templates->render('user_edit', ['user' => $user, 'auth' => $this->auth]);
-    } else {
-      header('Location: /');die;
-    }
-  }
-
   public function actionAdminUserEdit($id) {
     if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
-      $user = $this->db->getOne('users', $id);
+      $user = $this->user;
       echo $this->templates->render('admin/user_edit', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');die;
     }
   }
 
-  public function actionUserUpdate() {
+  public function actionEditUser() {
     $id = $_POST['id'];
     $username = $_POST['username'];
     $status = $_POST['status_text'];

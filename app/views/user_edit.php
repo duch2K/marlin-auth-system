@@ -65,7 +65,7 @@
           </div>
 
           <div class="form-group">
-            <button name="user_edit" class="btn btn-warning">Обновить</button>
+            <button type="submit" class="btn btn-warning">Обновить</button>
           </div>
         </form>
 

@@ -31,26 +31,33 @@
    <div class="container">
      <div class="row">
        <div class="col-md-8">
-         <h1>Профиль пользователя - Рахим</h1>
-         <div class="alert alert-success">Профиль обновлен</div>
+         <h1>Профиль пользователя - <?= $user['username']; ?></h1>
          
-         <div class="alert alert-danger">
-           <ul>
-             <li>Ошибка валидации</li>
-           </ul>
-         </div>
+         <?php 
+          if (isset($_SESSION['user_update_error'])): ?>
+            <div class="alert alert-danger">
+              <ul>
+                <li><?= $_SESSION['user_update_error']; ?></li>
+              </ul>
+            </div>
+            <?php unset($_SESSION['user_update_error']); 
+          elseif (isset($_SESSION['user_update_success'])): ?>
+            <div class="alert alert-success">Профиль обновлен</div>
+            <?php unset($_SESSION['user_update_success']); 
+          endif;?>
+
          <form action="" class="form">
            <div class="form-group">
              <label for="username">Имя</label>
-             <input type="text" id="username" class="form-control" value="Рахим">
+             <input type="text" id="username" class="form-control" value="<?= $user['username']; ?>">
            </div>
            <div class="form-group">
              <label for="status">Статус</label>
-             <input type="text" id="status" class="form-control" value="Разрабатываю новые проекты)">
+             <input type="text" id="status" class="form-control" value="<?= $user['status_text']; ?>">
            </div>
 
            <div class="form-group">
-             <button class="btn btn-warning">Обновить</button>
+             <button type="submit" class="btn btn-warning">Обновить</button>
            </div>
          </form>
        </div>

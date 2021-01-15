@@ -20,9 +20,9 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <li class="nav-item">
-            <a href="profile.html" class="nav-link">Мой профиль</a>
+            <a href="/user-<?= $auth->getUserId(); ?>" class="nav-link">Мой профиль</a>
           </li>
-          <a href="#" class="nav-link">Выйти</a>
+          <a href="/logout" class="nav-link">Выйти</a>
         </li>
       </ul>
     </div>
