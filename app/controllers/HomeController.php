@@ -5,19 +5,18 @@ namespace App\controllers;
 use Delight\Auth\Auth;
 use Delight\Auth\Role;
 use League\Plates\Engine;
-use App\components\QueryBuilder;
+use App\models\Users;
 
 class HomeController {
-  private $auth, $templates, $db;
+  private $auth, $templates;
 
-  public function __construct(Auth $auth, Engine $engine, QueryBuilder $db) {
+  public function __construct(Auth $auth, Engine $engine) {
     $this->auth = $auth;
     $this->templates = $engine;
-    $this->db = $db;
   }
   
   public function actionIndex() {
-    $users = $this->db->getAll('users');
+    $users = Users::getAllUsers();
     echo $this->templates->render('index', ['users' => $users, 'auth' => $this->auth]);
   }
 
@@ -30,7 +29,7 @@ class HomeController {
   }
 
   public function actionProfile($id) {
-    $user = $this->db->getOne('users', $id);
+    $user = Users::getUserById($id);
     if ($user)
       echo $this->templates->render('user_profile', ['user' => $user, 'auth' => $this->auth]);
     else
@@ -39,7 +38,7 @@ class HomeController {
 
   public function actionEditUser() {
     if ($this->auth->isLoggedIn()) {
-      $user = $this->db->getOne('users', $this->auth->getUserId());
+      $user = Users::getUserById($this->auth->getUserId());
       echo $this->templates->render('user_edit', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');die;
@@ -48,7 +47,7 @@ class HomeController {
 
   public function actionChangePassword() {
     if ($this->auth->isLoggedIn()) {
-      $user = $this->db->getOne('users', $this->auth->getUserId());
+      $user = Users::getUserById($this->auth->getUserId());
       echo $this->templates->render('changepassword', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');die;
@@ -57,7 +56,7 @@ class HomeController {
 
   public function actionAdmin() {
     if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
-      $users = $this->db->getAll('users');
+      $users = Users::getAllUsers();
       echo $this->templates->render('admin/index', ['users' => $users, 'auth' => $this->auth]);
     } else {
       header('Location: /');die;
