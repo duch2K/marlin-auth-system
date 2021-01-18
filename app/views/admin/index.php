@@ -52,7 +52,7 @@ $this->layout('layout', ['title' => 'Admin']) ?>
             <td><?= $user['username'] ?></td>
             <td><?= $user['email'] ?></td>
             <td>
-              <?php if (intval($user['role_mask']) !== \Delight\Auth\Role::ADMIN): ?>
+              <?php if (intval($user['roles_mask']) !== \Delight\Auth\Role::ADMIN): ?>
                 <a href="/admin/make-admin/<?=$user['id'];?>" class="btn btn-success">Назначить администратором</a>
               <?php else: ?>
                 <a href="/admin/demote/<?=$user['id'];?>" class="btn btn-danger">Разжаловать</a>
@@ -63,29 +63,6 @@ $this->layout('layout', ['title' => 'Admin']) ?>
             </td>
           </tr>
           <?php endforeach; ?>
-          <tr>
-            <td>2</td>
-            <td>John</td>
-            <td>john@marlindev.ru</td>
-            <td>
-              <a href="#" class="btn btn-danger">Разжаловать</a>
-              <a href="#" class="btn btn-info">Посмотреть</a>
-              <a href="#" class="btn btn-warning">Редактировать</a>
-              <a href="#" class="btn btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
-            </td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Jane</td>
-            <td>jane@marlindev.ru</td>
-            <td>
-              <a href="#" class="btn btn-success">Назначить администратором</a>
-              <a href="#" class="btn btn-info">Посмотреть</a>
-              <a href="#" class="btn btn-warning">Редактировать</a>
-              <a href="#" class="btn btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>

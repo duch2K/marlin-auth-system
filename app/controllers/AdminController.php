@@ -44,4 +44,14 @@ class AdminController {
     } else
       header('Location: /');die;
   }
+
+  public function actionDemoteUser($id) {
+    $user = $this->usersModel->getUserById($id);
+
+    if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN) and $user['roles_mask'] !== 1) {
+      $this->usersModel->editUserById($id, ['roles_mask' => 0]);
+      header('Location: /admin');die;
+    } else
+      header('Location: /');die;
+  }
 }
