@@ -8,15 +8,16 @@ use League\Plates\Engine;
 use App\models\Users;
 
 class HomeController {
-  private $auth, $templates;
+  private $auth, $templates, $usersModel;
 
-  public function __construct(Auth $auth, Engine $engine) {
+  public function __construct(Auth $auth, Engine $engine, Users $users) {
     $this->auth = $auth;
     $this->templates = $engine;
+    $this->usersModel = $users;
   }
   
   public function actionIndex() {
-    $users = Users::getAllUsers();
+    $users = $this->usersModel->getAllUsers();
     echo $this->templates->render('index', ['users' => $users, 'auth' => $this->auth]);
   }
 
@@ -29,17 +30,19 @@ class HomeController {
   }
 
   public function actionProfile($id) {
-    $user = Users::getUserById($id);
+    $user = $this->usersModel->getUserById($id);
     if ($user)
       echo $this->templates->render('user_profile', ['user' => $user, 'auth' => $this->auth]);
+      
     else
       header('Location: /');die;
   }
 
   public function actionEditUser() {
     if ($this->auth->isLoggedIn()) {
-      $user = Users::getUserById($this->auth->getUserId());
+      $user = $this->usersModel->getUserById($this->auth->getUserId());
       echo $this->templates->render('user_edit', ['user' => $user, 'auth' => $this->auth]);
+
     } else {
       header('Location: /');die;
     }
@@ -47,8 +50,9 @@ class HomeController {
 
   public function actionChangePassword() {
     if ($this->auth->isLoggedIn()) {
-      $user = Users::getUserById($this->auth->getUserId());
+      $user = $this->usersModel->getUserById($this->auth->getUserId());
       echo $this->templates->render('changepassword', ['user' => $user, 'auth' => $this->auth]);
+
     } else {
       header('Location: /');die;
     }
@@ -56,8 +60,9 @@ class HomeController {
 
   public function actionAdmin() {
     if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
-      $users = Users::getAllUsers();
+      $users = $this->usersModel->getAllUsers();
       echo $this->templates->render('admin/index', ['users' => $users, 'auth' => $this->auth]);
+
     } else {
       header('Location: /');die;
     }

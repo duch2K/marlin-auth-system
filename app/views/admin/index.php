@@ -1,4 +1,8 @@
-<?php $this->layout('layout', ['title' => 'Admin']) ?>
+<?php
+
+use Delight\Auth\Role;
+
+$this->layout('layout', ['title' => 'Admin']) ?>
 
 <div class="wrapper">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -48,10 +52,14 @@
             <td><?= $user['username'] ?></td>
             <td><?= $user['email'] ?></td>
             <td>
-              <a href="#" class="btn btn-success">Назначить администратором</a>
-              <a href="#" class="btn btn-info">Посмотреть</a>
-              <a href="#" class="btn btn-warning">Редактировать</a>
-              <a href="#" class="btn btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
+              <?php if (intval($user['role_mask']) !== \Delight\Auth\Role::ADMIN): ?>
+                <a href="/admin/make-admin/<?=$user['id'];?>" class="btn btn-success">Назначить администратором</a>
+              <?php else: ?>
+                <a href="/admin/demote/<?=$user['id'];?>" class="btn btn-danger">Разжаловать</a>
+              <?php endif; ?>
+              <a href="user-<?= $user['id']; ?>" class="btn btn-info">Посмотреть</a>
+              <a href="/admin/edit-user/<?=$user['id'];?>" class="btn btn-warning">Редактировать</a>
+              <a href="/admin/delete-user/<?=$user['id'];?>" class="btn btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
             </td>
           </tr>
           <?php endforeach; ?>

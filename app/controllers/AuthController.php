@@ -7,11 +7,12 @@ use Delight\Auth\Role;
 use League\Plates\Engine;
 use App\models\Users;
 class AuthController {
-  private $auth, $templates;
+  private $auth, $templates, $usersModel;
 
-  public function __construct(Auth $auth, Engine $engine) {
+  public function __construct(Auth $auth, Engine $engine, Users $users) {
     $this->auth = $auth;
     $this->templates = $engine;
+    $this->usersModel = $users;
   }
 
   public function actionLogin() {
@@ -92,7 +93,7 @@ class AuthController {
 
   public function actionAdminUserEdit($id) {
     if ($this->auth->isLoggedIn() and $this->auth->hasRole(Role::ADMIN)) {
-      $user = Users::getUserById($id);
+      $user = $this->usersModel->getUserById($id);
       echo $this->templates->render('admin/user_edit', ['user' => $user, 'auth' => $this->auth]);
     } else {
       header('Location: /');die;
@@ -107,7 +108,7 @@ class AuthController {
     if (strlen($status) > 255)
       $_SESSION['user_update_error'] = 'Статус слишком длинный!';
     else {
-      Users::editUserById($id, ['username' => $username, 'status_text' => $status]);
+      $this->usersModel->editUserById($id, ['username' => $username, 'status_text' => $status]);
       $_SESSION['user_update_success'] = true;
     }
 

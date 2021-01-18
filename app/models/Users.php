@@ -5,25 +5,25 @@ namespace App\models;
 use App\components\QueryBuilder;
 
 class Users {
-  private static $db;
+  private $db;
 
   public function __construct(QueryBuilder $db) {
-    self::$db = $db;
+    $this->db = $db;
   }
 
-  public static function getUserById($id) {
-    return self::$db->getOne('users', $id);
+  public function getUserById($id) {
+    return $this->db->getOne('users', $id);
   }
 
-  public static function getAllUsers() {
-    return self::$db->getAll('users');
+  public function getAllUsers() {
+    return $this->db->getAll('users');
   }
 
-  public static function editUserById($id, $data) {
-    self::$db->update('users', $id, $data);
+  public function editUserById($id, $data) {
+    $this->db->update('users', $id, $data);
   }
 
-  public static function deleteUserById($id) {
-    self::$db->delete('users', $id);
+  public function deleteUserById($id) {
+    $this->db->delete('users', $id);
   }
 }
